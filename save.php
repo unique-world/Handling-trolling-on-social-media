@@ -35,24 +35,6 @@ require_once 'config/config.php';
 
 
 
-// Perform a sample database query
-$query = "SELECT * FROM $tableName";
-$result = mysqli_query($connection, $query);
-
-if (mysqli_num_rows($result) > 0) {
-    // Output data from each row
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "Tweet text: " . $row["tweet_text"] . "<br>";
-        echo "comments: " . $row["comments"] . "<br>";
-        echo "<br>";
-    }
-} else {
-    echo "No tweets found.";
-}
-
-// Close the connection
-mysqli_close($connection);
-
 ?>
 
 
@@ -158,7 +140,42 @@ mysqli_close($connection);
 
 								 <br> <br> 	
 
-										</div><hr>
+										</div><hr> <?php
+			// Perform a sample database query
+		$query = "SELECT * FROM $tableName ORDER BY id DESC";
+		$result = mysqli_query($connection, $query);
+
+
+if (mysqli_num_rows($result) > 0) {
+    // Output data from each row
+	while ($row = mysqli_fetch_assoc($result)) {
+		echo "Tweet text: " . $row["tweet_text"] . "<br>";
+		echo "Comments: " . $row["comments"] . "<br>";
+	
+		// Display the image if available
+		if ($row["tweet_img"]) {
+			$imageData = $row["tweet_img"];
+	
+			// Output the image
+			echo '<img src="data:image/jpeg;base64,' . base64_encode($imageData) . '" alt="Tweet Image"><br>';
+		} else {
+			echo "Image: No image available<br>";
+		}
+	
+		echo "<br>";
+	}
+	
+	
+	
+	
+} else {
+    echo "No tweets found.";
+}
+
+// Close the connection
+mysqli_close($connection);
+
+?>
 												
 										</div>
 									
